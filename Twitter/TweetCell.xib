@@ -26,13 +26,13 @@
                             <constraint firstAttribute="height" constant="48" id="w1W-Io-si8"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="760" ambiguous="YES" misplaced="YES" text="Florian Jourda" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qd6-9B-J1H">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="260" verticalHuggingPriority="251" horizontalCompressionResistancePriority="760" text="Florian Jourda" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qd6-9B-J1H">
                         <rect key="frame" x="64" y="32" width="107" height="19"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="@florianjourda" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Btu-cF-tYj">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@florianjourda" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Btu-cF-tYj">
                         <rect key="frame" x="179" y="33" width="135" height="18"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" red="0.522622527" green="0.522622527" blue="0.522622527" alpha="1" colorSpace="calibratedRGB"/>
@@ -95,8 +95,8 @@
                     </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="Qd6-9B-J1H" firstAttribute="leading" secondItem="snu-Cc-I4F" secondAttribute="trailing" constant="8" id="0Nj-DH-9rH"/>
                     <constraint firstItem="xAV-9K-svt" firstAttribute="leading" secondItem="Btu-cF-tYj" secondAttribute="trailing" constant="8" id="0Rk-9d-wc6"/>
+                    <constraint firstItem="Qd6-9B-J1H" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="64" id="3NB-Ad-nof"/>
                     <constraint firstItem="Ujs-PK-5PZ" firstAttribute="leading" secondItem="LuB-zY-nT1" secondAttribute="trailing" constant="30" id="6Cw-tN-rvR"/>
                     <constraint firstAttribute="bottom" secondItem="LuB-zY-nT1" secondAttribute="bottom" constant="8" id="82F-86-HEL"/>
                     <constraint firstItem="Ujs-PK-5PZ" firstAttribute="centerY" secondItem="LuB-zY-nT1" secondAttribute="centerY" id="8yn-Ae-K91"/>
@@ -109,9 +109,9 @@
                     <constraint firstItem="Btu-cF-tYj" firstAttribute="leading" secondItem="Qd6-9B-J1H" secondAttribute="trailing" constant="8" id="Qqd-UJ-YRK"/>
                     <constraint firstItem="qEg-Ow-2Qo" firstAttribute="leading" secondItem="Ujs-PK-5PZ" secondAttribute="trailing" constant="30" id="ReS-MJ-CAa"/>
                     <constraint firstItem="Ujs-PK-5PZ" firstAttribute="centerY" secondItem="qEg-Ow-2Qo" secondAttribute="centerY" id="TKy-2K-rTY"/>
+                    <constraint firstItem="bT0-st-Xg9" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="64" id="a8y-Rp-VrD"/>
                     <constraint firstItem="LuB-zY-nT1" firstAttribute="leading" secondItem="Qd6-9B-J1H" secondAttribute="leading" id="bGm-J4-mAC"/>
                     <constraint firstAttribute="trailing" secondItem="xAV-9K-svt" secondAttribute="trailing" constant="8" id="g0d-Fk-9rv"/>
-                    <constraint firstItem="bT0-st-Xg9" firstAttribute="leading" secondItem="Qd6-9B-J1H" secondAttribute="leading" id="ibF-W4-xa1"/>
                     <constraint firstItem="U52-Te-UVa" firstAttribute="leading" secondItem="Fm6-TV-6GM" secondAttribute="trailing" constant="8" id="l5p-Fd-fCT"/>
                     <constraint firstItem="snu-Cc-I4F" firstAttribute="top" secondItem="Qd6-9B-J1H" secondAttribute="top" id="mah-3S-2JA"/>
                     <constraint firstItem="Btu-cF-tYj" firstAttribute="centerY" secondItem="xAV-9K-svt" secondAttribute="centerY" id="oaS-JX-8gM"/>

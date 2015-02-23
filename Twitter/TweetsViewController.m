@@ -102,19 +102,18 @@
         //        for (Tweet *tweet in tweets) {
         //            NSLog(@"text: %@", tweet.text);
         //        }
-        if (tweets.count == 0) {
-            return;
+        if (tweets.count != 0) {
+            NSMutableArray *allTweets = [NSMutableArray array];
+            if (atTheBeginning) {
+                [allTweets addObjectsFromArray:tweets];
+                [allTweets addObjectsFromArray:self.tweets];
+            } else {
+                [allTweets addObjectsFromArray:self.tweets];
+                [allTweets addObjectsFromArray:tweets];
+            }
+            self.tweets = allTweets;
+            [self.tableView reloadData];
         }
-        NSMutableArray *allTweets = [NSMutableArray array];
-        if (atTheBeginning) {
-            [allTweets addObjectsFromArray:tweets];
-            [allTweets addObjectsFromArray:self.tweets];
-        } else {
-            [allTweets addObjectsFromArray:self.tweets];
-            [allTweets addObjectsFromArray:tweets];
-        }
-        self.tweets = allTweets;
-        [self.tableView reloadData];
         [self.refreshControl endRefreshing];
     }];
 }
@@ -126,6 +125,7 @@
     self.tableView.dataSource = self;
     [self.tableView registerNib:[UINib nibWithNibName:@"TweetCell" bundle:nil] forCellReuseIdentifier:@"TweetCell"];
     self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedRowHeight = 85;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

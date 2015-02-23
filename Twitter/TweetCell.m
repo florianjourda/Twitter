@@ -33,7 +33,7 @@
 
 - (void)awakeFromNib {
     // Initialization code
-   self.messageLabel.preferredMaxLayoutWidth = self.textLabel.frame.size.width;
+   //self.messageLabel.preferredMaxLayoutWidth = self.textLabel.frame.size.width;
    self.avatarImageView.layer.cornerRadius = 5;
    self.avatarImageView.clipsToBounds = YES;
 }
@@ -82,9 +82,9 @@
     self.tweet = self.tweet;
 }
 
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    self.messageLabel.preferredMaxLayoutWidth = self.textLabel.frame.size.width;
-}
+//- (void)layoutSubviews {
+//    [super layoutSubviews];
+//    self.messageLabel.preferredMaxLayoutWidth = self.textLabel.frame.size.width;
+//}
 
 @end

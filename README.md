@@ -2,7 +2,7 @@
 
 This is an iOS application to show Twitter tweets.
 
-Time spent: 6 hours spent in total
+Time spent: 16 hours spent in total
 
 # Project Requirements
 * [x] User can sign in using OAuth login flow
@@ -18,6 +18,9 @@ Time spent: 6 hours spent in total
 * [x] Optional: User should be able to unretweet and unfavorite and should decrement the retweet and favorite count.
 * [x] Optional: Replies should be prefixed with the username and the reply_id should be set when posting the tweet,
 * [x] Optional: User can load more tweets once they reach the bottom of the feed using infinite loading similar to the actual Twitter client.
+
+# Notes
+* I have a weird bug where selected TweetCells will have their UILable with the tweet text move to the left. I was not able to understand why.
 
 Walkthrough of all user stories:
 
