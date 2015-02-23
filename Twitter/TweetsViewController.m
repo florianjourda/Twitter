@@ -7,14 +7,16 @@
 //
 
 #import "TweetsViewController.h"
+#import "ComposeViewController.h"
 #import "User.h"
 #import "TwitterClient.h"
 #import "Tweet.h"
 #import "TweetCell.h"
+#import "TweetDetailsController.h"
 
-@interface TweetsViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface TweetsViewController () <UITableViewDataSource, UITableViewDelegate, ComposeViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (nonatomic, strong) NSArray *tweets;
+@property (nonatomic, strong) NSMutableArray *tweets;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 
 @end
@@ -24,7 +26,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    [self setupNavigationAppearance:self.navigationController];
+    [TweetsViewController setupNavigationAppearance:self.navigationController];
     self.title = @"Home";
 
    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Sign Out" style:UIBarButtonItemStylePlain target:self action:@selector(onLogout)];
@@ -33,11 +35,11 @@
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"New" style:UIBarButtonItemStylePlain target:self action:@selector(onNew)];
     self.navigationItem.rightBarButtonItem = rightButton;
 
-    self.tweets = [NSArray array];
+    self.tweets = [NSMutableArray array];
     [self setupTableView];
     [self setupRefreshControl];
 
-    [self loadTweets];
+    [self loadTweets:true];
 
 }
 
@@ -51,11 +53,23 @@
 }
 
 - (void)onNew {
-    NSLog(@"New");
+    ComposeViewController *viewController = [[ComposeViewController alloc] init];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    viewController.delegate = self;
+    [TweetsViewController setupNavigationAppearance:navigationController];
+    [self presentViewController:navigationController animated:YES completion:nil];
+}
+
+- (void)composeViewController:(ComposeViewController *)composeViewController didComposeTweet:(Tweet *)tweet {
+    NSMutableArray *tweets = [[NSMutableArray alloc] init];
+    [tweets addObject:tweet];
+    [tweets addObjectsFromArray:self.tweets];
+    self.tweets = tweets;
+    [self.tableView reloadData];
 }
 
 
-- (void)setupNavigationAppearance:(UINavigationController *)navigationController {
++ (void)setupNavigationAppearance:(UINavigationController *)navigationController {
     [navigationController.navigationBar setBarStyle:(UIBarStyle)UIStatusBarStyleLightContent];
     navigationController.navigationBar.tintColor = [UIColor whiteColor];
     UIColor *yelpColor = [UIColor colorWithRed:64.0f/255.0f
@@ -69,12 +83,37 @@
 
 #pragma mark - Data
 
-- (void)loadTweets {
-    [[TwitterClient sharedInstance] homeTimelineWithParams:nil completion:^(NSArray *tweets, NSError *error) {
+- (void)loadTweets:(BOOL)atTheBeginning {
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if (atTheBeginning) {
+        if (self.tweets.count > 0) {
+            Tweet *mostRecentTweet = (Tweet*)self.tweets[0];
+            params[@"since_id"] = mostRecentTweet.tweetId;
+        }
+    } else {
+        if (self.tweets.count > 0) {
+            Tweet *leastRecentTweet = (Tweet*)self.tweets[self.tweets.count - 1];
+            params[@"max_id"] = leastRecentTweet.tweetId;
+        }
+    }
+
+    [[TwitterClient sharedInstance] homeTimelineWithParams:params completion:^(NSArray *tweets, NSError *error) {
+        NSLog(@"Got %lu tweets", (unsigned long)tweets.count);
         //        for (Tweet *tweet in tweets) {
         //            NSLog(@"text: %@", tweet.text);
         //        }
-        self.tweets = tweets;
+        if (tweets.count == 0) {
+            return;
+        }
+        NSMutableArray *allTweets = [NSMutableArray array];
+        if (atTheBeginning) {
+            [allTweets addObjectsFromArray:tweets];
+            [allTweets addObjectsFromArray:self.tweets];
+        } else {
+            [allTweets addObjectsFromArray:self.tweets];
+            [allTweets addObjectsFromArray:tweets];
+        }
+        self.tweets = allTweets;
         [self.tableView reloadData];
         [self.refreshControl endRefreshing];
     }];
@@ -103,11 +142,19 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:true];
+    TweetDetailsController *viewController = [[TweetDetailsController alloc] init];
+    viewController.tweet = self.tweets[indexPath.row];
+    [self.navigationController pushViewController:viewController animated:true];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetCell"];
     cell.tweet = self.tweets[indexPath.row];
+
+    if (indexPath.row == self.tweets.count - 1) {
+        [self loadTweets:NO];
+    }
+
     return cell;
 }
 
@@ -122,7 +169,7 @@
 
 - (void)onRefresh {
     // Some loading
-    [self loadTweets];
+    [self loadTweets:true];
 }
 
 
