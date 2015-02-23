@@ -15,6 +15,7 @@
 @interface TweetsViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSArray *tweets;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 
 @end
 
@@ -34,15 +35,9 @@
 
     self.tweets = [NSArray array];
     [self setupTableView];
+    [self setupRefreshControl];
 
-
-    [[TwitterClient sharedInstance] homeTimelineWithParams:nil completion:^(NSArray *tweets, NSError *error) {
-//        for (Tweet *tweet in tweets) {
-//            NSLog(@"text: %@", tweet.text);
-//        }
-        self.tweets = tweets;
-        [self.tableView reloadData];
-    }];
+    [self loadTweets];
 
 }
 
@@ -71,6 +66,19 @@
     navigationController.navigationBar.translucent = NO;
 }
 
+
+#pragma mark - Data
+
+- (void)loadTweets {
+    [[TwitterClient sharedInstance] homeTimelineWithParams:nil completion:^(NSArray *tweets, NSError *error) {
+        //        for (Tweet *tweet in tweets) {
+        //            NSLog(@"text: %@", tweet.text);
+        //        }
+        self.tweets = tweets;
+        [self.tableView reloadData];
+        [self.refreshControl endRefreshing];
+    }];
+}
 
 #pragma mark - Table view methods
 
@@ -103,6 +111,19 @@
     return cell;
 }
 
+
+# pragma mark - Refresh Control
+
+- (void)setupRefreshControl {
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(onRefresh) forControlEvents:UIControlEventValueChanged];
+    [self.tableView insertSubview:self.refreshControl atIndex:0];
+}
+
+- (void)onRefresh {
+    // Some loading
+    [self loadTweets];
+}
 
 
 @end
