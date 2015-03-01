@@ -4,22 +4,6 @@
    version = "2.0">
    <Breakpoints>
       <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Twitter/TwitterClient.m"
-            timestampString = "446280670.1005"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "34"
-            endingLineNumber = "34"
-            landmarkName = "+sharedInstance"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.ExceptionBreakpoint">
          <BreakpointContent
             shouldBeEnabled = "Yes"
@@ -35,13 +19,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Twitter/TweetsViewController.m"
-            timestampString = "446367364.020349"
+            filePath = "Twitter/TwitterClient.m"
+            timestampString = "446945699.302739"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "51"
-            endingLineNumber = "51"
-            landmarkName = "-onLogout"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
+            landmarkName = "-homeTimelineWithParams:completion:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -51,13 +35,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Twitter/TweetsViewController.m"
-            timestampString = "446350314.147103"
+            filePath = "Twitter/TweetCell.m"
+            timestampString = "446945969.062501"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "56"
-            endingLineNumber = "56"
-            landmarkName = "-onNew"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
+            landmarkName = "-setTweet:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -67,12 +51,12 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Twitter/TweetDetailsController.m"
-            timestampString = "446370872.530967"
+            filePath = "Twitter/TweetCell.m"
+            timestampString = "446946054.596678"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "46"
-            endingLineNumber = "46"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
             landmarkName = "-setTweet:"
             landmarkType = "5">
          </BreakpointContent>

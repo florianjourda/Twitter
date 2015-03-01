@@ -69,8 +69,8 @@ NSString * const kTwitterBaseUrl = @"https://api.twitter.com";
 
 - (void)homeTimelineWithParams:(NSDictionary *)params completion:(void (^)(NSArray *, NSError *))completion {
     [self GET:@"1.1/statuses/home_timeline.json" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"Got tweets: %@", responseObject);
-        NSArray *tweets = [Tweet tweetWithArray:responseObject];
+        NSLog(@"Got tweets");//, responseObject);
+        NSArray *tweets = [MTLJSONAdapter modelsOfClass:[Tweet class] fromJSONArray:responseObject error:nil];;
         completion(tweets, nil);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Did not get tweets: %@", error);
@@ -83,7 +83,7 @@ NSString * const kTwitterBaseUrl = @"https://api.twitter.com";
     params[@"id"] = tweet.tweetId;
     NSString *favoriteEndpoint = (isFavorite) ? @"1.1/favorites/create.json" : @"1.1/favorites/destroy.json";
     [self POST:favoriteEndpoint parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        Tweet *tweet = [[Tweet alloc] initWithDictionary:responseObject];
+        Tweet *tweet = [MTLJSONAdapter modelOfClass:[Tweet class] fromJSONDictionary:responseObject error:nil];
         completion(tweet, nil);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         completion(nil, error);
@@ -96,7 +96,7 @@ NSString * const kTwitterBaseUrl = @"https://api.twitter.com";
     params[@"in_reply_to_status_id"] = (tweetToReplyTo) ? tweetToReplyTo.tweetId : @"";
     [self POST:@"1.1/statuses/update.json" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"Posted tweet: %@", responseObject);
-        Tweet *tweet = [[Tweet alloc] initWithDictionary:responseObject];
+        Tweet *tweet = [MTLJSONAdapter modelOfClass:[Tweet class] fromJSONDictionary:responseObject error:nil];
         completion(tweet, nil);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error with posting tweet: %@", error);
@@ -107,7 +107,7 @@ NSString * const kTwitterBaseUrl = @"https://api.twitter.com";
 - (void)retweet:(Tweet *)tweet completion:(void (^)(Tweet *tweet, NSError *error))completion {
     [self POST:[NSString stringWithFormat:@"1.1/statuses/retweet/%@.json", tweet.tweetId] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"Retweeted tweet: %@", responseObject);
-        Tweet *tweet = [[Tweet alloc] initWithDictionary:responseObject];
+        Tweet *tweet = [MTLJSONAdapter modelOfClass:[Tweet class] fromJSONDictionary:responseObject error:nil];;
         completion(tweet, nil);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error with retweeting: %@", error);

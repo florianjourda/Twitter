@@ -50,7 +50,7 @@
     Tweet *tweetToDisplay;
     if (self.tweet.originalTweet) {
         tweetToDisplay = self.tweet.originalTweet;
-        self.retweeterLabel.text = self.tweet.user.name;
+   //     self.retweeterLabel.text = self.tweet.user.name;
         self.retweeterLabel.hidden = NO;
         self.retweetedHeightConstraint.constant = 16;
         self.isRetweetImageView.hidden = NO;
@@ -61,11 +61,12 @@
         self.isRetweetImageView.hidden = YES;
     }
 
-    [ImageLoaderHelper setImage:self.avatarImageView withUrlString:tweetToDisplay.user.profileImageUrl];
+    //[ImageLoaderHelper setImage:self.avatarImageView withUrlString:tweetToDisplay.user.profileImageUrl];
+    NSLog(@"%@", tweetToDisplay);
     self.messageLabel.text = tweetToDisplay.text;
-    self.userNameLabel.text = tweetToDisplay.user.name;
+    //self.userNameLabel.text = tweetToDisplay.user.name;
     self.timeLabel.text = [DateHelper dateDiff:tweetToDisplay.createdAt];
-    self.userScreenNameLabel.text = [NSString stringWithFormat:@"@%@", tweetToDisplay.user.screenName];
+    //self.userScreenNameLabel.text = [NSString stringWithFormat:@"@%@", tweetToDisplay.user.screenName];
     NSLog(@"tweet %d %d", self.tweet.retweeted, tweetToDisplay.favorited);
     self.retweetButton.selected = tweetToDisplay.retweeted;
     self.favoriteButton.selected = tweetToDisplay.favorited;
