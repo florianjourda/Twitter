@@ -11,7 +11,9 @@
 #import "TwitterClient.h"
 #import "User.h"
 #import "Tweet.h"
+#import "MasterViewController.h"
 #import "TweetsViewController.h"
+#import "HamburgerViewController.h"
 
 @interface AppDelegate ()
 
@@ -32,14 +34,24 @@
     UIViewController *viewController;
     if (user != nil) {
         NSLog(@"Welcome back %@", user.name);
-        viewController = [[TweetsViewController alloc] init];
+
+        HamburgerViewController *hamburgerViewController = [[HamburgerViewController alloc] init];
+        UINavigationController *timelineView = [[UINavigationController alloc] initWithRootViewController:[[TweetsViewController alloc] init]];
+        UINavigationController *profileView = [[UINavigationController alloc] initWithRootViewController:[[TweetsViewController alloc] init]];
+        //messagesView.messagesMode = YES;
+        UINavigationController *messagesView = [[UINavigationController alloc] initWithRootViewController:[[TweetsViewController alloc] init]];
+        MasterViewController *viewController = [[MasterViewController alloc] initWithTimelineViewController:timelineView
+                                                                                      profileViewController:profileView
+                                                                                       tweetsViewController:messagesView
+                                                                                    hamburgerViewController:hamburgerViewController];
+        self.window.rootViewController = viewController;
     } else {
         NSLog(@"Not logged in");
         viewController = [[LoginViewController alloc] init];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+        self.window.rootViewController = navigationController;
     }
 
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-    self.window.rootViewController = navigationController;
     [self.window makeKeyAndVisible];
 
     return YES;

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1716913B1AA405C300BC116E /* HamburgerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 171691391AA405C300BC116E /* HamburgerViewController.m */; };
+		1716913C1AA405C300BC116E /* HamburgerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1716913A1AA405C300BC116E /* HamburgerViewController.xib */; };
+		171691451AA4089200BC116E /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 171691431AA4089200BC116E /* MasterViewController.m */; };
+		171691461AA4089200BC116E /* MasterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 171691441AA4089200BC116E /* MasterViewController.xib */; };
 		176E4F911A99AE5800782E26 /* TweetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 176E4F8F1A99AE5800782E26 /* TweetsViewController.m */; };
 		176E4F921A99AE5800782E26 /* TweetsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 176E4F901A99AE5800782E26 /* TweetsViewController.xib */; };
 		176E4F981A99C86700782E26 /* TweetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 176E4F961A99C86700782E26 /* TweetCell.m */; };
@@ -53,6 +57,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		171691381AA405C300BC116E /* HamburgerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HamburgerViewController.h; sourceTree = "<group>"; };
+		171691391AA405C300BC116E /* HamburgerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HamburgerViewController.m; sourceTree = "<group>"; };
+		1716913A1AA405C300BC116E /* HamburgerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HamburgerViewController.xib; sourceTree = "<group>"; };
+		171691421AA4089200BC116E /* MasterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterViewController.h; sourceTree = "<group>"; };
+		171691431AA4089200BC116E /* MasterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterViewController.m; sourceTree = "<group>"; };
+		171691441AA4089200BC116E /* MasterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MasterViewController.xib; sourceTree = "<group>"; };
 		176E4F8E1A99AE5800782E26 /* TweetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetsViewController.h; sourceTree = "<group>"; };
 		176E4F8F1A99AE5800782E26 /* TweetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TweetsViewController.m; sourceTree = "<group>"; };
 		176E4F901A99AE5800782E26 /* TweetsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TweetsViewController.xib; sourceTree = "<group>"; };
@@ -179,6 +189,12 @@
 				176E4FD51A9B01A500782E26 /* TweetDetailsController.h */,
 				176E4FD61A9B01A500782E26 /* TweetDetailsController.m */,
 				176E4FD71A9B01A500782E26 /* TweetDetailsController.xib */,
+				171691381AA405C300BC116E /* HamburgerViewController.h */,
+				171691391AA405C300BC116E /* HamburgerViewController.m */,
+				1716913A1AA405C300BC116E /* HamburgerViewController.xib */,
+				171691421AA4089200BC116E /* MasterViewController.h */,
+				171691431AA4089200BC116E /* MasterViewController.m */,
+				171691441AA4089200BC116E /* MasterViewController.xib */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -366,6 +382,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				171691461AA4089200BC116E /* MasterViewController.xib in Resources */,
 				176E4F921A99AE5800782E26 /* TweetsViewController.xib in Resources */,
 				176E4FD41A9AC2B200782E26 /* ComposeViewController.xib in Resources */,
 				176E4FC11A9AA53400782E26 /* favorite-light.png in Resources */,
@@ -374,6 +391,7 @@
 				17B50C4D1A996EF5003AABAD /* LaunchScreen.xib in Resources */,
 				176E4FC21A9AA53400782E26 /* favorite-on.png in Resources */,
 				176E4FC61A9AA53400782E26 /* refresh-arrowsmall.png in Resources */,
+				1716913C1AA405C300BC116E /* HamburgerViewController.xib in Resources */,
 				176E4FC51A9AA53400782E26 /* refresh-arrow.png in Resources */,
 				176E4FC71A9AA53400782E26 /* reply-dark.png in Resources */,
 				176E4FCA1A9AA53400782E26 /* retweet-light.png in Resources */,
@@ -436,10 +454,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				17A3A30E1A9971C000A89D13 /* TwitterClient.m in Sources */,
+				1716913B1AA405C300BC116E /* HamburgerViewController.m in Sources */,
 				17B50C421A996EF5003AABAD /* AppDelegate.m in Sources */,
 				17EC30BA1A9990DF00D6E22B /* User.m in Sources */,
 				176E4FD31A9AC2B200782E26 /* ComposeViewController.m in Sources */,
 				17EC30B71A9990B800D6E22B /* Tweet.m in Sources */,
+				171691451AA4089200BC116E /* MasterViewController.m in Sources */,
 				176E4FDC1A9B047E00782E26 /* DateHelper.m in Sources */,
 				17B50C3F1A996EF5003AABAD /* main.m in Sources */,
 				17A3A3091A99709600A89D13 /* LoginViewController.m in Sources */,
