@@ -77,7 +77,10 @@
     [tweets addObject:tweet];
     [tweets addObjectsFromArray:self.tweets];
     self.tweets = tweets;
-    [self.tableView reloadData];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    [self.tableView beginUpdates];
+    [self.tableView style:@[indexPath] withRowAnimation:UITableViewRowAnimationRight];
+    [self.tableView endUpdates];
 }
 
 
