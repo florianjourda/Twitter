@@ -62,12 +62,11 @@
     }
 
     [ImageLoaderHelper setImage:self.avatarImageView withUrlString:tweetToDisplay.user.profileImageUrl];
-    NSLog(@"%@", tweetToDisplay);
+    //NSLog(@"%@", tweetToDisplay);
     self.messageLabel.text = tweetToDisplay.text;
     self.userNameLabel.text = tweetToDisplay.user.name;
     self.timeLabel.text = [DateHelper dateDiff:tweetToDisplay.createdAt];
     self.userScreenNameLabel.text = [NSString stringWithFormat:@"@%@", tweetToDisplay.user.screenName];
-    NSLog(@"tweet %d %d", self.tweet.retweeted, tweetToDisplay.favorited);
     self.retweetButton.selected = tweetToDisplay.retweeted;
     self.favoriteButton.selected = tweetToDisplay.favorited;
 

@@ -14,4 +14,8 @@
 @property (nonatomic, strong) User *user;
 @property (nonatomic, strong) Tweet *originalTweet;
 
+- (void)favorite:(BOOL)isFavorite completion:(void (^)(Tweet *tweet, NSError *error))completion;
+- (void)reply;
+- (void)retweet;
+
 @end

@@ -1,4 +1,5 @@
 #import "Tweet.h"
+#import "TwitterClient.h"
 
 @implementation Tweet
 
@@ -12,7 +13,6 @@
              @"retweetCount": @"retweet_count",
              @"favoriteCount": @"favorite_count",
              @"originalTweet": @"retweeted_status",
-             //@"user": @"user",
              //             @"tweetLinks":@"entities.urls",
              //             @"tweetImages":@"extended_entities.media",
              //             self.tweetPhotoUrl = nil;
@@ -68,26 +68,6 @@
     return [NSValueTransformer mtl_JSONDictionaryTransformerWithModelClass:User.class];
 }
 
-
-//+ (NSValueTransformer *)JSONTransformerForKey:(NSString *)key
-//{
-//    if ([key isEqualToString:@"date"]) {
-//        return [MTLValueTransformer reversibleTransformerWithForwardBlock:^(NSString *str) {
-//            return [[self dateFormatter] dateFromString:str];
-//        } reverseBlock:^(NSDate *date) {
-//            return [[self dateFormatter] stringFromDate:date];
-//        }];
-//    }
-//
-//    return nil;
-//}
-
-//+ (NSValueTransformer *)userProfilePictureJSONTransformer {
-//    return [MTLValueTransformer reversibleTransformerWithBlock:^(NSString *str) {
-//        str = [str stringByReplacingOccurrencesOfString:@"normal" withString:@"bigger"];
-//        return [NSURL URLWithString:str];
-//    }];
-//}
 //
 //+ (NSValueTransformer *)tweetImagesJSONTransformer {
 //    return [MTLValueTransformer transformerWithBlock:^id(NSDictionary *tweetImagesDict) {
@@ -115,6 +95,26 @@
 //+ (NSString *)removeNewlineCharactersFromString:(NSString *)string {
 //    return [string stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
 //}
+
+# pragma mark - Actions
+
+- (void)favorite:(BOOL)isFavorite completion:(void (^)(Tweet *tweet, NSError *error))completion {
+    self.favorited = isFavorite;
+    [[TwitterClient sharedInstance] setTweet:self asFavorite:self.favorited completion:completion];
+}
+
+- (void)reply {
+//    ComposeViewController *viewController = [[ComposeViewController alloc] init];
+//    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+//    viewController.delegate = self;
+//    viewController.originalTweet = self.tweet;
+//    [TweetsViewController setupNavigationAppearance:navigationController];
+//    [self presentViewController:navigationController animated:YES completion:nil];
+}
+
+- (void)retweet {
+
+}
 
 
 @end

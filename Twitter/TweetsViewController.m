@@ -14,7 +14,7 @@
 #import "TweetCell.h"
 #import "TweetDetailsController.h"
 
-@interface TweetsViewController () <UITableViewDataSource, UITableViewDelegate, ComposeViewControllerDelegate>
+@interface TweetsViewController () <UITableViewDataSource, UITableViewDelegate, ComposeViewControllerDelegate, TweetDetailsControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *tweets;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
@@ -144,7 +144,12 @@
     [tableView deselectRowAtIndexPath:indexPath animated:true];
     TweetDetailsController *viewController = [[TweetDetailsController alloc] init];
     viewController.tweet = self.tweets[indexPath.row];
+    viewController.delegate = self;
     [self.navigationController pushViewController:viewController animated:true];
+}
+
+- (void)tweetDetailsController:(TweetDetailsController *)tweetDetailsController didUpdateTweet:(Tweet *)tweet {
+    NSLog(@"Should update tweeet");
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

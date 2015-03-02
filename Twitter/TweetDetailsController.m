@@ -73,12 +73,17 @@
 
 
 - (IBAction)onToggleFavorite:(id)sender {
-    self.tweet.favorited = !self.tweet.favorited;
-    [[TwitterClient sharedInstance] setTweet:self.tweet asFavorite:self.tweet.favorited completion:^(Tweet *tweet, NSError *error) {
+    void(^updateTweet)(Tweet *tweet, NSError *error) = ^(Tweet *tweet, NSError *error) {
+        // Refresh UI
         self.tweet = tweet;
-    }];
-    self.tweet = self.tweet;
+        // Tell delegate to refresh UI
+        [self.delegate tweetDetailsController:self didUpdateTweet:tweet];
+    };
 
+    // Async action
+    [self.tweet favorite:!self.tweet.favorited completion:updateTweet];
+    // Sync action to fake fast result
+    updateTweet(self.tweet, nil);
 }
 
 - (IBAction)onReply:(id)sender {
