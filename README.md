@@ -2,6 +2,8 @@
 
 This is an more rich version of the week 3 iOS application to show Twitter tweets.
 
+Time spent: 11 hours spent in total (5 hours on adding Mantle and addressing comments of last week, 6 hours on doing the required tasks)
+
 # Project Requirements
 
 ## Hamburger menu
