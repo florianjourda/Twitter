@@ -54,7 +54,7 @@ NSString * const kTwitterBaseUrl = @"https://api.twitter.com";
 
         [[TwitterClient sharedInstance] GET:@"1.1/account/verify_credentials.json" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
             //NSLog(@"Current user %@", responseObject);
-            User *user = [[User alloc] initWithDictionary:responseObject];
+            User *user = [MTLJSONAdapter modelOfClass:[User class] fromJSONDictionary:responseObject error:nil];
             [User setCurrentUser:user];
             NSLog(@"Current user %@", user.name);
             self.loginCompletion(user,  nil);
@@ -70,7 +70,7 @@ NSString * const kTwitterBaseUrl = @"https://api.twitter.com";
 - (void)homeTimelineWithParams:(NSDictionary *)params completion:(void (^)(NSArray *, NSError *))completion {
     [self GET:@"1.1/statuses/home_timeline.json" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"Got tweets");//, responseObject);
-        NSArray *tweets = [MTLJSONAdapter modelsOfClass:[Tweet class] fromJSONArray:responseObject error:nil];;
+        NSArray *tweets = [MTLJSONAdapter modelsOfClass:[Tweet class] fromJSONArray:responseObject error:nil];
         completion(tweets, nil);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Did not get tweets: %@", error);

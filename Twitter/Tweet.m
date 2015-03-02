@@ -64,6 +64,10 @@
     return [NSValueTransformer mtl_JSONDictionaryTransformerWithModelClass:Tweet.class];
 }
 
++ (NSValueTransformer *)userJSONTransformer {
+    return [NSValueTransformer mtl_JSONDictionaryTransformerWithModelClass:User.class];
+}
+
 
 //+ (NSValueTransformer *)JSONTransformerForKey:(NSString *)key
 //{

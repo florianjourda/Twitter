@@ -6,19 +6,17 @@
 //  Copyright (c) 2015 Box. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <Mantle/Mantle.h>
 
 extern NSString * const UserDidLoginNotification;
 extern NSString * const UserDidLogoutNotification;
 
-@interface User : NSObject
+@interface User : MTLModel <MTLJSONSerializing>
 
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *screenName;
 @property (nonatomic, strong) NSString *profileImageUrl;
 @property (nonatomic, strong) NSString *tagLine;
-
-- (id)initWithDictionary:(NSDictionary *)dictionary;
 
 + (User *)currentUser;
 + (void)setCurrentUser:(User *)currentUser;
