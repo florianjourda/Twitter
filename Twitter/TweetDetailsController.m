@@ -35,11 +35,19 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.tweet = self.tweet;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tweetDidUpdate) name:TweetDidUpdate object:self.tweet];
+    [self tweetDidUpdate];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)tweetDidUpdate {
+    NSLog(@"Updated tweet! %d", self.tweet.favorited);
+    // Refresh UI;
+    self.tweet = self.tweet;
 }
 
 - (void)setTweet:(Tweet *)tweet {
@@ -59,12 +67,13 @@
         //self.isRetweetImageView.frame = self.isRetweetImageViewFrameHidden;
     }
 
+    NSLog(@"setTweet %d %d", tweetToDisplay.retweeted, tweetToDisplay.favorited);
+
     [ImageLoaderHelper setImage:self.avatarImageView withUrlString:tweetToDisplay.user.profileImageUrl];
     self.messageLabel.text = tweetToDisplay.text;
     self.userNameLabel.text = tweetToDisplay.user.name;
     self.timeLabel.text = [DateHelper dateDiff:tweetToDisplay.createdAt];
     self.userScreenNameLabel.text = [NSString stringWithFormat:@"@%@", tweetToDisplay.user.screenName];
-    NSLog(@"tweet %d %d", self.tweet.retweeted, tweetToDisplay.favorited);
     self.retweetButton.selected = tweetToDisplay.retweeted;
     self.favoriteButton.selected = tweetToDisplay.favorited;
     self.retweetCountLabel.text = [NSString stringWithFormat:@"%li", (long)tweetToDisplay.retweetCount];
@@ -73,17 +82,13 @@
 
 
 - (IBAction)onToggleFavorite:(id)sender {
+    NSLog(@"----------");
+    NSLog(@"onToggleFavorite start");
     void(^updateTweet)(Tweet *tweet, NSError *error) = ^(Tweet *tweet, NSError *error) {
-        // Refresh UI
-        self.tweet = tweet;
-        // Tell delegate to refresh UI
-        [self.delegate tweetDetailsController:self didUpdateTweet:tweet];
+        NSLog(@"onToggleFavorite completion");
+        NSLog(@"----------");
     };
-
-    // Async action
     [self.tweet favorite:!self.tweet.favorited completion:updateTweet];
-    // Sync action to fake fast result
-    updateTweet(self.tweet, nil);
 }
 
 - (IBAction)onReply:(id)sender {

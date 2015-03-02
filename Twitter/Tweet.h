@@ -1,6 +1,9 @@
 #import <Mantle/Mantle.h>
 #import "User.h"
 
+
+extern NSString * const TweetDidUpdate;
+
 @interface Tweet : MTLModel <MTLJSONSerializing>
 
 @property (nonatomic, strong) NSString *tweetId;

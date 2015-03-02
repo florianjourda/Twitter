@@ -1,6 +1,8 @@
 #import "Tweet.h"
 #import "TwitterClient.h"
 
+NSString * const TweetDidUpdate = @"TweetDidUpdate";
+
 @implementation Tweet
 
 #pragma mark - Properties
@@ -99,8 +101,20 @@
 # pragma mark - Actions
 
 - (void)favorite:(BOOL)isFavorite completion:(void (^)(Tweet *tweet, NSError *error))completion {
+    // Async server-side action
+    [[TwitterClient sharedInstance] setTweet:self asFavorite:isFavorite completion:^(Tweet *tweet, NSError *error) {
+        [self mergeValuesForKeysFromModel:tweet];
+        NSLog(@"Call TweetDidUpdate with favorite: %d", self.favorited);
+        [[NSNotificationCenter defaultCenter] postNotificationName:TweetDidUpdate object:self];
+        if (completion != nil) {
+            completion(tweet, nil);
+        }
+    }];
+    // Sync client-side action to fake fast result
     self.favorited = isFavorite;
-    [[TwitterClient sharedInstance] setTweet:self asFavorite:self.favorited completion:completion];
+    NSLog(@"Set favorite: %d", self.favorited);
+    NSLog(@"Call TweetDidUpdate with favorite: %d", self.favorited);
+    [[NSNotificationCenter defaultCenter] postNotificationName:TweetDidUpdate object:self];
 }
 
 - (void)reply {

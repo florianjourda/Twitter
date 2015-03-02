@@ -43,6 +43,7 @@
     if (self.originalTweet != nil) {
         self.messageTextView.text = [NSString stringWithFormat:@"@%@ ", self.originalTweet.user.screenName];
     }
+
 }
 
 
