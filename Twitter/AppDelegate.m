@@ -13,6 +13,7 @@
 #import "Tweet.h"
 #import "MasterViewController.h"
 #import "TweetsViewController.h"
+#import "ProfileViewController.h"
 #import "HamburgerViewController.h"
 
 @interface AppDelegate ()
@@ -35,15 +36,31 @@
     if (user != nil) {
         NSLog(@"Welcome back %@", user.name);
 
-        HamburgerViewController *hamburgerViewController = [[HamburgerViewController alloc] init];
-        UINavigationController *timelineView = [[UINavigationController alloc] initWithRootViewController:[[TweetsViewController alloc] init]];
-        UINavigationController *profileView = [[UINavigationController alloc] initWithRootViewController:[[TweetsViewController alloc] init]];
-        //messagesView.messagesMode = YES;
-        UINavigationController *messagesView = [[UINavigationController alloc] initWithRootViewController:[[TweetsViewController alloc] init]];
-        MasterViewController *viewController = [[MasterViewController alloc] initWithTimelineViewController:timelineView
-                                                                                      profileViewController:profileView
-                                                                                       tweetsViewController:messagesView
-                                                                                    hamburgerViewController:hamburgerViewController];
+//        HamburgerViewController *hamburgerViewController = [[HamburgerViewController alloc] init];
+//        UINavigationController *timelineView = [[UINavigationController alloc] initWithRootViewController:[[TweetsViewController alloc] init]];
+//        UINavigationController *profileView = [[UINavigationController alloc] initWithRootViewController:[[TweetsViewController alloc] init]];
+//        //messagesView.messagesMode = YES;
+//        UINavigationController *messagesView = [[UINavigationController alloc] initWithRootViewController:[[TweetsViewController alloc] init]];
+//        MasterViewController *viewController = [[MasterViewController alloc] initWithTimelineViewController:timelineView
+//                                                                                      profileViewController:profileView
+//                                                                                       tweetsViewController:messagesView
+//                                                                                    hamburgerViewController:hamburgerViewController];
+        NSArray *menuItems = @[
+            @{@"text": @"", @"action":^(void){NSLog(@"0");}},  // row for spacing
+            @{@"text": @"Profile", @"action":^(void){NSLog(@"1");}},
+            @{@"text": @"Timeline", @"action":^(void){NSLog(@"2");}},
+            @{@"text": @"Mentions", @"action":^(void){NSLog(@"3");}},
+            @{@"text": @"Log Out", @"action":^(void){NSLog(@"4");}},
+        ];
+
+        HamburgerViewController *hamburgerViewController = [[HamburgerViewController alloc] initWithMenuItems:menuItems];
+
+        ProfileViewController *profileViewController = [[ProfileViewController alloc] initWithUser:[User currentUser]];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:profileViewController];
+        MasterViewController *viewController = [[MasterViewController alloc]
+                                                initWithBackgroundViewController:hamburgerViewController
+                                                foregroundViewController:navigationController
+        ];
         self.window.rootViewController = viewController;
     } else {
         NSLog(@"Not logged in");

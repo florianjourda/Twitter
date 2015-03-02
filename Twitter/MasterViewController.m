@@ -9,41 +9,35 @@
 #import "MasterViewController.h"
 #import "TweetsViewController.h"
 #import "HamburgerViewController.h"
+#import "ProfileViewController.h"
 
 @interface MasterViewController ()
 @property (weak, nonatomic) IBOutlet UIView *backgroundView;
-@property (weak, nonatomic) IBOutlet UIView *thisView;
-@property (weak, nonatomic) IBOutlet UIView *thatView;
-@property (strong, nonatomic) UIViewController *hamburgerViewController;
-@property (strong, nonatomic) UIViewController *timelineViewController;
+@property (weak, nonatomic) IBOutlet UIView *foregroundView;
+@property (strong, nonatomic) UIViewController *backgroundViewController;
+@property (strong, nonatomic) UIViewController *foregroundViewController;
 @property (strong, nonatomic) UIViewController *profileViewController;
 @property (strong, nonatomic) UIViewController *tweetsViewController;
+@property (nonatomic, assign) CGPoint originalCenter;
 
 @end
 
 @implementation MasterViewController
 
-- (id)initWithTimelineViewController:(UIViewController *)timelineViewController
-               profileViewController:(UIViewController *)profileViewController
-                tweetsViewController:(UIViewController *)tweetsViewController
-             hamburgerViewController:(UIViewController *)hamburgerViewController {
+
+- (id)initWithBackgroundViewController:(UIViewController *)backgroundViewController
+          foregroundViewController:(UIViewController *)foregroundViewController {
     self = [super init];
 
     if (self) {
-        self.timelineViewController = timelineViewController;
+        self.backgroundViewController = backgroundViewController;
         //[self addPanGestureToViewController:timelineViewController];
         //self.slidableViewController = timelineViewController;
         //self.currentSlidableItem = Timeline;
 
-        self.profileViewController = profileViewController;
+        self.foregroundViewController = foregroundViewController;
         //[self addPanGestureToViewController:profileViewController];
         //self.profileViewController.view.hidden = YES;
-
-        self.tweetsViewController = tweetsViewController;
-        //[self addPanGestureToViewController:messagesViewController];
-        //self.messagesViewController.view.hidden = YES;
-
-        self.hamburgerViewController = hamburgerViewController;
     }
 
     return self;
@@ -55,14 +49,17 @@
     NSLog(@"View did load");
     // Do any additional setup after loading the view from its nib.
 
-    self.navigationController.navigationBar.hidden = YES;
-    [self.backgroundView addSubview:self.hamburgerViewController.view];
+    //self.navigationController.navigationBar.hidden = YES;
+    [self.backgroundView addSubview:self.backgroundViewController.view];
+    [self addChildViewController:self.backgroundViewController];
+    [self.backgroundViewController didMoveToParentViewController:self];
 //    TweetsViewController *viewController = [[TweetsViewController alloc] init];
 //    [self.view addSubview:viewController.view];
-
-    [self.thisView addSubview:self.tweetsViewController.view];
-    [self addChildViewController:self.tweetsViewController];
-    [self.tweetsViewController didMoveToParentViewController:self];
+//
+//    ProfileViewController *profileViewController = [[ProfileViewController alloc] initWithUser:[User currentUser]];
+    [self.foregroundView addSubview:self.foregroundViewController.view];
+    [self addChildViewController:self.foregroundViewController];
+    [self.foregroundViewController didMoveToParentViewController:self];
 
 //    [self.tweetView addSubview:self.tweetsViewController.view];
 //    [self addChildViewController:self.tweetsViewController];
@@ -75,22 +72,13 @@
 - (void)onPan:(UIPanGestureRecognizer *)sender {
     CGPoint translation = [sender translationInView:self.view];
     CGPoint velocity = [sender velocityInView:self.view];
-    if (velocity.x > 0) {
-        self.thisView.hidden = YES;
-        self.thatView.hidden = YES;
-    } else {
-        self.thisView.hidden = NO;
-        self.thatView.hidden = NO;
-    }
-    // Table scroll takes precedence over panning.  Woot!
-//    if (sender.state == UIGestureRecognizerStateBegan) {
-//        self.originalCenter = sender.view.center;
-//    } else if (sender.state == UIGestureRecognizerStateChanged) {
-//        CGPoint translation = [sender translationInView:self.view];
-//        CGPoint center = CGPointMake(self.originalCenter.x + translation.x, self.originalCenter.y + translation.y);
-//        sender.view.center = center;
-//    } else if (sender.state == UIGestureRecognizerStateEnded) {
-//        CGPoint velocity = [sender velocityInView:self.view];
+
+    if (sender.state == UIGestureRecognizerStateBegan) {
+        self.originalCenter = self.foregroundView.center;
+    } else if (sender.state == UIGestureRecognizerStateChanged) {
+        CGPoint center = CGPointMake(MIN(self.view.frame.size.width - 100, MAX(0, self.originalCenter.x + translation.x)), self.originalCenter.y);
+        self.foregroundView.center = center;
+    } else if (sender.state == UIGestureRecognizerStateEnded) {
 //        CGFloat width = self.view.frame.size.width;
 //        CGFloat height = self.view.frame.size.height;
 //        CGPoint center;
@@ -102,7 +90,7 @@
 //        [UIView animateWithDuration:0.2 animations:^{
 //            sender.view.center = center;
 //        }];
-//    }
+    }
 }
 
 

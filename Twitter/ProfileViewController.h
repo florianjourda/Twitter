@@ -1,5 +1,5 @@
 //
-//  HamburgerViewController.h
+//  ProfileViewController.h
 //  Twitter
 //
 //  Created by Florian Jourda on 3/1/15.
@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "User.h"
 
-@interface HamburgerViewController : UIViewController
+@interface ProfileViewController : UIViewController
 
-- (id)initWithMenuItems:(NSArray *)menuItems;
+- (id)initWithUser:(User *)user;
 
 @end

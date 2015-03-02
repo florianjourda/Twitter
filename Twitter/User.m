@@ -28,8 +28,18 @@ NSString * const UserDidLogoutNotification = @"UserDidLogoutNotification";
     return @{
         @"screenName": @"screen_name",
         @"profileImageUrl": @"profile_image_url",
-        @"tagLine": @"description"
+        @"profileImageFullSizeUrl": @"profile_image_url",
+        @"tagLine": @"description",
+        @"tweetCount": @"statuses_count",
+        @"followerCount": @"followers_count",
+        @"followingCount": @"friends_count",
     };
+}
+
++ (NSValueTransformer *)profileImageFullSizeUrlJSONTransformer {
+    return [MTLValueTransformer transformerWithBlock:^NSString *(NSString *profileImageUrl) {
+        return [profileImageUrl stringByReplacingOccurrencesOfString:@"_normal" withString:@""];
+    }];
 }
 
 static User *_currentUser = nil;

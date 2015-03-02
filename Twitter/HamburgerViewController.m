@@ -8,9 +8,11 @@
 
 #import "HamburgerViewController.h"
 #import "User.h"
+#import "ProfileViewController.h"
 
 @interface HamburgerViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) NSArray *menuItems;
 
 @end
 
@@ -27,6 +29,17 @@
 
 }
 
+- (id)initWithMenuItems:(NSArray *)menuItems {
+    self = [super init];
+
+    if (self) {
+        self.menuItems = menuItems;
+    }
+
+    return self;
+}
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -34,52 +47,21 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 4;
+    return self.menuItems.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     //UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"HamburgerCell"];
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"HamburgerCell"];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    switch (indexPath.row) {
-        case 0:
-            cell.textLabel.text = @"Home";
-            break;
-        case 1:
-            cell.textLabel.text = @"Profile";
-            break;
-        case 2:
-            cell.textLabel.text = @"Mentions";
-            break;
-        case 3:
-            cell.textLabel.text = @"Log Out";
-            break;
-        default:
-            cell.textLabel.text = @"";
-            break;
-    }
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.textLabel.text = self.menuItems[indexPath.row][@"text"];
     return cell;
 }
 
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    switch (indexPath.row) {
-//        case 0:
-//            //Home timeline
-//            [self.delegate closeMenu:@"home" withUser:nil];
-//            break;
-//        case 1:
-//            //ProfileView
-//            [self.delegate closeMenu:@"profile" withUser:[User currentuser]];
-//            break;
-//        case 2:
-//            //Mentions
-//            [self.delegate closeMenu:@"mentions" withUser:nil];
-//            break;
-//        default:
-//            [User logOut];
-//            break;
-//    }
-//}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:true];
+    void (^action)() = self.menuItems[indexPath.row][@"action"];
+    action();
+}
 
 @end

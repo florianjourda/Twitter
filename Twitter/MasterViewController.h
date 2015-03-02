@@ -10,8 +10,6 @@
 
 @interface MasterViewController : UIViewController
 
-- (id)initWithTimelineViewController:(UIViewController *)timelineViewController
-               profileViewController:(UIViewController *)profileViewController
-                tweetsViewController:(UIViewController *)tweetsViewController
-             hamburgerViewController:(UIViewController *)hamburgerViewController;
+- (id)initWithBackgroundViewController:(UIViewController *)backgroundViewController
+          foregroundViewController:(UIViewController *)foregroundViewController;
 @end
