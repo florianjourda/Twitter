@@ -26,6 +26,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *retweetButton;
 @property (weak, nonatomic) IBOutlet UIButton *favoriteButton;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *retweetedHeightConstraint;
+@property (nonatomic, strong) Tweet *tweetToDisplay;
 
 @end
 
@@ -48,28 +49,27 @@
 - (void)setTweet:(Tweet *)tweet {
     _tweet = tweet;
 
-    Tweet *tweetToDisplay;
     if (self.tweet.originalTweet) {
-        tweetToDisplay = self.tweet.originalTweet;
+        self.tweetToDisplay = self.tweet.originalTweet;
         self.retweeterLabel.text = [NSString stringWithFormat:@"%@ retweeted", self.tweet.user.name];
         self.retweeterLabel.hidden = NO;
         self.retweetedHeightConstraint.constant = 16;
         self.isRetweetImageView.hidden = NO;
     } else {
-        tweetToDisplay = self.tweet;
+        self.tweetToDisplay = self.tweet;
         self.retweeterLabel.hidden = YES;
         self.retweetedHeightConstraint.constant = 0;
         self.isRetweetImageView.hidden = YES;
     }
 
-    [ImageLoaderHelper setImage:self.avatarImageView withUrlString:tweetToDisplay.user.profileImageUrl];
+    [ImageLoaderHelper setImage:self.avatarImageView withUrlString:self.tweetToDisplay.user.profileImageUrl];
     //NSLog(@"%@", tweetToDisplay);
-    self.messageLabel.text = tweetToDisplay.text;
-    self.userNameLabel.text = tweetToDisplay.user.name;
-    self.timeLabel.text = [DateHelper dateDiff:tweetToDisplay.createdAt];
-    self.userScreenNameLabel.text = [NSString stringWithFormat:@"@%@", tweetToDisplay.user.screenName];
-    self.retweetButton.selected = tweetToDisplay.retweeted;
-    self.favoriteButton.selected = tweetToDisplay.favorited;
+    self.messageLabel.text = self.tweetToDisplay.text;
+    self.userNameLabel.text = self.tweetToDisplay.user.name;
+    self.timeLabel.text = [DateHelper dateDiff:self.tweetToDisplay.createdAt];
+    self.userScreenNameLabel.text = [NSString stringWithFormat:@"@%@", self.tweetToDisplay.user.screenName];
+    self.retweetButton.selected = self.tweetToDisplay.retweeted;
+    self.favoriteButton.selected = self.tweetToDisplay.favorited;
 
 }
 
@@ -90,6 +90,8 @@
 //    [TweetsViewController setupNavigationAppearance:navigationController];
 //    [self presentViewController:navigationController animated:YES completion:nil];
 }
+
+
 
 //- (void)layoutSubviews {
 //    [super layoutSubviews];

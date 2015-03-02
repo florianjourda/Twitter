@@ -16,9 +16,11 @@
 @property (weak, nonatomic) IBOutlet UIView *foregroundView;
 @property (strong, nonatomic) UIViewController *backgroundViewController;
 @property (strong, nonatomic) UIViewController *foregroundViewController;
-@property (strong, nonatomic) UIViewController *profileViewController;
-@property (strong, nonatomic) UIViewController *tweetsViewController;
 @property (nonatomic, assign) CGPoint originalCenter;
+@property (nonatomic, strong) UITapGestureRecognizer *tapRecognizer;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *foregroundXContraint;
+//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *foregroundTopConstraint;
+//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *foregroundBottomConstraint;
 
 @end
 
@@ -31,13 +33,7 @@
 
     if (self) {
         self.backgroundViewController = backgroundViewController;
-        //[self addPanGestureToViewController:timelineViewController];
-        //self.slidableViewController = timelineViewController;
-        //self.currentSlidableItem = Timeline;
-
         self.foregroundViewController = foregroundViewController;
-        //[self addPanGestureToViewController:profileViewController];
-        //self.profileViewController.view.hidden = YES;
     }
 
     return self;
@@ -46,27 +42,20 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSLog(@"View did load");
-    // Do any additional setup after loading the view from its nib.
+    //NSLog(@"View did load");
 
-    //self.navigationController.navigationBar.hidden = YES;
     [self.backgroundView addSubview:self.backgroundViewController.view];
     [self addChildViewController:self.backgroundViewController];
     [self.backgroundViewController didMoveToParentViewController:self];
-//    TweetsViewController *viewController = [[TweetsViewController alloc] init];
-//    [self.view addSubview:viewController.view];
-//
-//    ProfileViewController *profileViewController = [[ProfileViewController alloc] initWithUser:[User currentUser]];
+
     [self.foregroundView addSubview:self.foregroundViewController.view];
     [self addChildViewController:self.foregroundViewController];
     [self.foregroundViewController didMoveToParentViewController:self];
 
-//    [self.tweetView addSubview:self.tweetsViewController.view];
-//    [self addChildViewController:self.tweetsViewController];
-//    [self.tweetsViewController didMoveToParentViewController:self];
-
     UIPanGestureRecognizer *gestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(onPan:)];
     [self.view addGestureRecognizer:gestureRecognizer];
+
+    self.tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(close)];
 }
 
 - (void)onPan:(UIPanGestureRecognizer *)sender {
@@ -76,21 +65,50 @@
     if (sender.state == UIGestureRecognizerStateBegan) {
         self.originalCenter = self.foregroundView.center;
     } else if (sender.state == UIGestureRecognizerStateChanged) {
-        CGPoint center = CGPointMake(MIN(self.view.frame.size.width - 100, MAX(0, self.originalCenter.x + translation.x)), self.originalCenter.y);
-        self.foregroundView.center = center;
+        self.foregroundXContraint.constant = MAX(0, MIN(self.view.frame.size.width - 40, self.originalCenter.x - self.foregroundView.frame.size.width / 2 + translation.x));
     } else if (sender.state == UIGestureRecognizerStateEnded) {
-//        CGFloat width = self.view.frame.size.width;
-//        CGFloat height = self.view.frame.size.height;
-//        CGPoint center;
-//        if (velocity.x > 0) {
-//            center = CGPointMake(3 * width / 2 - 64, height / 2 + 32);
-//        } else {
-//            center = self.view.center;
-//        }
-//        [UIView animateWithDuration:0.2 animations:^{
-//            sender.view.center = center;
-//        }];
+        if (velocity.x > 0) {
+            [self open];
+        } else {
+            [self close];
+        }
     }
+}
+
+- (void)close {
+    [UIView animateWithDuration:0.3
+                          delay: 0.0
+                        options: UIViewAnimationOptionTransitionNone
+                     animations:^{
+                         [self placeForegroundToTheLeft];
+                         [self.view layoutIfNeeded];
+                     }
+                     completion:nil];
+    [self.foregroundView removeGestureRecognizer:self.tapRecognizer];
+}
+
+- (void)open {
+    [UIView animateWithDuration:0.3
+                          delay: 0.0
+                        options: UIViewAnimationOptionTransitionNone
+                     animations:^{
+                         [self placeForegroundToTheRight];
+                         [self.view layoutIfNeeded];
+                     }
+                     completion:nil];
+    [self.foregroundView addGestureRecognizer:self.tapRecognizer];
+}
+
+- (void)placeForegroundToTheLeft {
+    self.foregroundXContraint.constant = 0;
+//    self.foregroundTopConstraint.constant = 0;
+//    self.foregroundBottomConstraint.constant = 0;
+}
+
+- (void)placeForegroundToTheRight {
+    self.foregroundXContraint.constant = self.view.frame.size.width - 60;
+//    self.foregroundTopConstraint.constant = 30;
+//    self.foregroundBottomConstraint.constant = 30;
 }
 
 

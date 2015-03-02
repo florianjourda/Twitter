@@ -8,6 +8,8 @@
 
 #import "User.h"
 #import "TwitterClient.h"
+#import "ProfileViewController.h"
+#import "AppDelegate.h"
 
 NSString * const UserDidLoginNotification = @"UserDidLoginNotification";
 NSString * const UserDidLogoutNotification = @"UserDidLogoutNotification";
@@ -76,6 +78,12 @@ NSString * const kCurrentUserKey = @"kCurrentUserKey";
     [User setCurrentUser:nil];
     [[TwitterClient sharedInstance].requestSerializer removeAccessToken];
     [[NSNotificationCenter defaultCenter] postNotificationName:UserDidLogoutNotification object:nil];
+}
+
+- (void)showProfile {
+    ProfileViewController *profileViewController = [[ProfileViewController alloc] initWithUser:self];
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate.navigationController pushViewController:profileViewController animated:YES];
 }
 
 @end

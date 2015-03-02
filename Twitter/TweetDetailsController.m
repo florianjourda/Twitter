@@ -26,6 +26,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *retweetCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *favoriteCountLabel;
+@property (nonatomic, strong) Tweet *tweetToDisplay;
+@property (weak, nonatomic) IBOutlet UIView *tapView;
 
 @end
 
@@ -36,6 +38,14 @@
     // Do any additional setup after loading the view from its nib.
     self.tweet = self.tweet;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tweetDidUpdate) name:TweetDidUpdate object:self.tweet];
+
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onUserTap)];
+    [self.tapView addGestureRecognizer:tapGestureRecognizer];
+}
+
+- (void)onUserTap {
+    NSLog(@"TAP");
+    [self.tweetToDisplay.user showProfile];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -52,15 +62,14 @@
 - (void)setTweet:(Tweet *)tweet {
     _tweet = tweet;
 
-    Tweet *tweetToDisplay;
     if (self.tweet.originalTweet) {
-        tweetToDisplay = self.tweet.originalTweet;
+        self.tweetToDisplay = self.tweet.originalTweet;
         self.retweeterLabel.text = self.tweet.user.name;
         self.retweeterLabel.hidden = NO;
         self.isRetweetImageView.hidden = NO;
         //self.isRetweetImageView.frame = self.isRetweetImageViewFrameShowed;
     } else {
-        tweetToDisplay = self.tweet;
+        self.tweetToDisplay = self.tweet;
         self.retweeterLabel.hidden = YES;
         self.isRetweetImageView.hidden = YES;
         //self.isRetweetImageView.frame = self.isRetweetImageViewFrameHidden;
@@ -68,15 +77,15 @@
 
     //NSLog(@"setTweet %d %d", tweetToDisplay.retweeted, tweetToDisplay.favorited);
 
-    [ImageLoaderHelper setImage:self.avatarImageView withUrlString:tweetToDisplay.user.profileImageUrl];
-    self.messageLabel.text = tweetToDisplay.text;
-    self.userNameLabel.text = tweetToDisplay.user.name;
-    self.timeLabel.text = [DateHelper dateDiff:tweetToDisplay.createdAt];
-    self.userScreenNameLabel.text = [NSString stringWithFormat:@"@%@", tweetToDisplay.user.screenName];
-    self.retweetButton.selected = tweetToDisplay.retweeted;
-    self.favoriteButton.selected = tweetToDisplay.favorited;
-    self.retweetCountLabel.text = [NSString stringWithFormat:@"%li", (long)tweetToDisplay.retweetCount];
-    self.favoriteCountLabel.text = [NSString stringWithFormat:@"%li", (long)tweetToDisplay.favoriteCount];
+    [ImageLoaderHelper setImage:self.avatarImageView withUrlString:self.tweetToDisplay.user.profileImageUrl];
+    self.messageLabel.text = self.tweetToDisplay.text;
+    self.userNameLabel.text = self.tweetToDisplay.user.name;
+    self.timeLabel.text = [DateHelper dateDiff:self.tweetToDisplay.createdAt];
+    self.userScreenNameLabel.text = [NSString stringWithFormat:@"@%@", self.tweetToDisplay.user.screenName];
+    self.retweetButton.selected = self.tweetToDisplay.retweeted;
+    self.favoriteButton.selected = self.tweetToDisplay.favorited;
+    self.retweetCountLabel.text = [NSString stringWithFormat:@"%li", (long)self.tweetToDisplay.retweetCount];
+    self.favoriteCountLabel.text = [NSString stringWithFormat:@"%li", (long)self.tweetToDisplay.favoriteCount];
 }
 
 

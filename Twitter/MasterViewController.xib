@@ -8,6 +8,7 @@
             <connections>
                 <outlet property="backgroundView" destination="Vkx-BQ-8qK" id="mLj-HE-leH"/>
                 <outlet property="foregroundView" destination="ATu-Hm-9mY" id="orX-k1-sWJ"/>
+                <outlet property="foregroundXContraint" destination="iP2-hv-45z" id="778-0y-QqD"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -20,11 +21,11 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
-                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ATu-Hm-9mY" userLabel="ForegroundView">
-                    <rect key="frame" x="94" y="0.0" width="320" height="568"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ATu-Hm-9mY" userLabel="ForegroundView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <color key="backgroundColor" red="1" green="0.19770641759999999" blue="0.26323423169999999" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="320" id="0t8-lT-CYG"/>
+                        <constraint firstAttribute="width" constant="320" id="USL-97-ESF"/>
                     </constraints>
                 </view>
             </subviews>
@@ -32,12 +33,13 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="Vkx-BQ-8qK" secondAttribute="trailing" id="DbU-ti-cxZ"/>
                 <constraint firstAttribute="bottom" secondItem="Vkx-BQ-8qK" secondAttribute="bottom" id="VkS-OA-Ooz"/>
-                <constraint firstAttribute="bottom" secondItem="ATu-Hm-9mY" secondAttribute="bottom" id="bkB-Th-lVT"/>
+                <constraint firstAttribute="bottom" secondItem="ATu-Hm-9mY" secondAttribute="bottom" id="bkB-Th-lVT" userLabel="Bottom"/>
                 <constraint firstItem="Vkx-BQ-8qK" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="hhR-9z-HDo"/>
-                <constraint firstItem="ATu-Hm-9mY" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="wsj-4C-nue"/>
+                <constraint firstItem="ATu-Hm-9mY" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="iP2-hv-45z"/>
+                <constraint firstItem="ATu-Hm-9mY" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="wsj-4C-nue" userLabel="Top"/>
                 <constraint firstItem="Vkx-BQ-8qK" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="xko-Dk-e8Z"/>
             </constraints>
-            <point key="canvasLocation" x="403" y="470"/>
+            <point key="canvasLocation" x="420.75" y="470"/>
         </view>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

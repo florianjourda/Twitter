@@ -12,4 +12,5 @@
 
 - (id)initWithBackgroundViewController:(UIViewController *)backgroundViewController
           foregroundViewController:(UIViewController *)foregroundViewController;
+- (void)close;
 @end

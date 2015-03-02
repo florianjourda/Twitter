@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface TweetsViewController : UIViewController
+- (id)initForMentions:(BOOL)isForMentions;
 + (void)setupNavigationAppearance:(UINavigationController *)navigationController;
 
 @end

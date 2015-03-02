@@ -4,7 +4,7 @@ This is an more rich version of the week 3 iOS application to show Twitter tweet
 
 # Project Requirements
 * Hamburger menu
-** [] Dragging anywhere in the view should reveal the menu.
+** [x] Dragging anywhere in the view should reveal the menu.
 ** [x] The menu should include links to your profile, the home timeline, and the mentions view.
 ** [x] The menu can look similar to the LinkedIn menu below or feel free to take liberty with the UI.
 * Profile page
@@ -14,7 +14,7 @@ This is an more rich version of the week 3 iOS application to show Twitter tweet
 ** [] Optional: As the paging view moves, increase the opacity of the background screen. See the actual Twitter app for this effect
 ** [] Optional: Pulling down the profile page should blur and resize the header image.
 * Home Timeline
-** [] Tapping on a user image should bring up that user's profile page
+** [x] Tapping on a user image should bring up that user's profile page
 * Optional: Account switching
 ** [] Long press on tab bar to bring up Account view with animation
 ** [] Tap account to switch to

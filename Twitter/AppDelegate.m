@@ -17,7 +17,7 @@
 #import "HamburgerViewController.h"
 
 @interface AppDelegate ()
-
+@property (nonatomic, strong) MasterViewController *masterViewController;
 @end
 
 @implementation AppDelegate
@@ -36,32 +36,37 @@
     if (user != nil) {
         NSLog(@"Welcome back %@", user.name);
 
-//        HamburgerViewController *hamburgerViewController = [[HamburgerViewController alloc] init];
-//        UINavigationController *timelineView = [[UINavigationController alloc] initWithRootViewController:[[TweetsViewController alloc] init]];
-//        UINavigationController *profileView = [[UINavigationController alloc] initWithRootViewController:[[TweetsViewController alloc] init]];
-//        //messagesView.messagesMode = YES;
-//        UINavigationController *messagesView = [[UINavigationController alloc] initWithRootViewController:[[TweetsViewController alloc] init]];
-//        MasterViewController *viewController = [[MasterViewController alloc] initWithTimelineViewController:timelineView
-//                                                                                      profileViewController:profileView
-//                                                                                       tweetsViewController:messagesView
-//                                                                                    hamburgerViewController:hamburgerViewController];
+        ProfileViewController *profileViewController = [[ProfileViewController alloc] initWithUser:[User currentUser]];
+        TweetsViewController *tweetsViewController = [[TweetsViewController alloc] initForMentions:NO];
+        TweetsViewController *mentionsViewController = [[TweetsViewController alloc] initForMentions:YES];
+        self.navigationController = [[UINavigationController alloc] initWithRootViewController:tweetsViewController];
+
         NSArray *menuItems = @[
-            @{@"text": @"", @"action":^(void){NSLog(@"0");}},  // row for spacing
-            @{@"text": @"Profile", @"action":^(void){NSLog(@"1");}},
-            @{@"text": @"Timeline", @"action":^(void){NSLog(@"2");}},
-            @{@"text": @"Mentions", @"action":^(void){NSLog(@"3");}},
-            @{@"text": @"Log Out", @"action":^(void){NSLog(@"4");}},
+            @{@"text": @"", @"action":^(void){NSLog(@"0");}},// Empty cell at the top
+            @{@"text": @"Profile", @"action":^(void){
+                [self.navigationController setViewControllers:@[profileViewController] animated:YES];
+                [self.masterViewController close];
+            }},
+            @{@"text": @"Timeline", @"action":^(void){
+                [self.navigationController setViewControllers:@[tweetsViewController] animated:YES];
+                [self.masterViewController close];
+            }},
+            @{@"text": @"Mentions", @"action":^(void){
+                [self.navigationController setViewControllers:@[mentionsViewController] animated:YES];
+                [self.masterViewController close];
+            }},
+            @{@"text": @"Sign Out", @"action":^(void){
+                [User logout];
+            }},
         ];
 
         HamburgerViewController *hamburgerViewController = [[HamburgerViewController alloc] initWithMenuItems:menuItems];
 
-        ProfileViewController *profileViewController = [[ProfileViewController alloc] initWithUser:[User currentUser]];
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:profileViewController];
-        MasterViewController *viewController = [[MasterViewController alloc]
-                                                initWithBackgroundViewController:hamburgerViewController
-                                                foregroundViewController:navigationController
+        self.masterViewController = [[MasterViewController alloc]
+                                        initWithBackgroundViewController:hamburgerViewController
+                                                foregroundViewController:self.navigationController
         ];
-        self.window.rootViewController = viewController;
+        self.window.rootViewController = self.masterViewController;
     } else {
         NSLog(@"Not logged in");
         viewController = [[LoginViewController alloc] init];
@@ -72,6 +77,35 @@
     [self.window makeKeyAndVisible];
 
     return YES;
+}
+
+- (void)pushViewController:(UIViewController *)viewController toNavigationController:(UINavigationController *)navigationController {
+    if (navigationController.topViewController == viewController) {
+        return;
+    }
+    @try {
+        [navigationController setViewControllers:@[viewController] animated:YES];
+        //[navigationController pushViewController:viewController animated:YES];
+    } @catch (NSException * ex) {
+        //“Pushing the same view controller instance more than once is not supported”
+        //NSInvalidArgumentException
+        NSLog(@"Exception: [%@]:%@",[ex  class], ex );
+        NSLog(@"ex.name:'%@'", ex.name);
+        NSLog(@"ex.reason:'%@'", ex.reason);
+        //Full error includes class pointer address so only care if it starts with this error
+        NSRange range = [ex.reason rangeOfString:@"Pushing the same view controller instance more than once is not supported"];
+
+        if ([ex.name isEqualToString:@"NSInvalidArgumentException"] &&
+            range.location != NSNotFound) {
+            //view controller already exists in the stack - just pop back to it
+            NSLog(@"Already exists");
+            [navigationController popToViewController:viewController animated:YES];
+        } else {
+            NSLog(@"ERROR:UNHANDLED EXCEPTION TYPE:%@", ex);
+        }
+    } @finally {
+        //NSLog(@"finally");
+    }
 }
 
 - (void)userDidLogout {

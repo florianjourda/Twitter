@@ -18,19 +18,28 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *tweets;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (nonatomic, assign) BOOL isForMentions;
 
 @end
 
 @implementation TweetsViewController 
 
+- (id)initForMentions:(BOOL)isForMentions {
+    self = [super init];
+    if (self != nil) {
+        self.isForMentions = isForMentions;
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
     [TweetsViewController setupNavigationAppearance:self.navigationController];
-    self.title = @"Home";
+    self.title = (self.isForMentions) ? @"Mentions" : @"Timeline";
 
-   UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Sign Out" style:UIBarButtonItemStylePlain target:self action:@selector(onLogout)];
-    self.navigationItem.leftBarButtonItem = leftButton;
+//   UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Sign Out" style:UIBarButtonItemStylePlain target:self action:@selector(onLogout)];
+//    self.navigationItem.leftBarButtonItem = leftButton;
 
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"New" style:UIBarButtonItemStylePlain target:self action:@selector(onNew)];
     self.navigationItem.rightBarButtonItem = rightButton;
@@ -112,7 +121,7 @@
         }
     }
 
-    [[TwitterClient sharedInstance] homeTimelineWithParams:params completion:^(NSArray *tweets, NSError *error) {
+    void (^completion)(NSArray *, NSError *) = ^(NSArray *tweets, NSError *error) {
         NSLog(@"Got %lu tweets", (unsigned long)tweets.count);
         //        for (Tweet *tweet in tweets) {
         //            NSLog(@"text: %@", tweet.text);
@@ -124,13 +133,22 @@
                 [allTweets addObjectsFromArray:self.tweets];
             } else {
                 [allTweets addObjectsFromArray:self.tweets];
-                [allTweets addObjectsFromArray:tweets];
+                NSArray *tweetsWithoutLeastRecentTweet = [tweets subarrayWithRange:NSMakeRange(1, tweets.count - 1)];
+                [allTweets addObjectsFromArray:tweetsWithoutLeastRecentTweet];
             }
-            self.tweets = allTweets;
-            [self.tableView reloadData];
+            if (allTweets.count > self.tweets.count) {
+                self.tweets = allTweets;
+                [self.tableView reloadData];
+            }
         }
         [self.refreshControl endRefreshing];
-    }];
+    };
+
+    if (self.isForMentions) {
+        [[TwitterClient sharedInstance] mentionTimelineWithParams:params completion:completion];
+    } else {
+        [[TwitterClient sharedInstance] homeTimelineWithParams:params completion:completion];
+    }
 }
 
 #pragma mark - Table view methods
