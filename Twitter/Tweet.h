@@ -19,6 +19,6 @@ extern NSString * const TweetDidUpdate;
 
 - (void)favorite:(BOOL)isFavorite completion:(void (^)(Tweet *tweet, NSError *error))completion;
 - (void)reply;
-- (void)retweet;
+- (void)retweet:(void (^)(Tweet *tweet, NSError *error))completion;
 
 @end

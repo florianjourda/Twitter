@@ -40,8 +40,20 @@
     [self setupRefreshControl];
 
     [self loadTweets:true];
-
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tweetDidUpdate:) name:TweetDidUpdate object:nil];
 }
+
+- (void)tweetDidUpdate:(NSNotification *)notification {
+    NSLog(@"Refresh TweetsViewController");
+    Tweet *updatedTweet = (Tweet *)notification.object;
+    NSUInteger updatedTweetRow = [self.tweets indexOfObject:updatedTweet];
+    NSIndexPath *updatedTweetIndexPath = [NSIndexPath indexPathForRow:updatedTweetRow inSection:0];
+    NSLog(@"Found tweet at %lu", (unsigned long)updatedTweetRow);
+    [self.tableView beginUpdates];
+    [self.tableView reloadRowsAtIndexPaths:@[updatedTweetIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView endUpdates];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

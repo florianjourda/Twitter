@@ -10,6 +10,7 @@
 #import "ImageLoaderHelper.h"
 #import "TwitterClient.h"
 #import "DateHelper.h"
+#import "ComposeViewController.h"
 
 @interface TweetCell()
 @property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
@@ -73,13 +74,21 @@
 }
 
 
-
 - (IBAction)onToggleFavorite:(id)sender {
-    self.tweet.favorited = !self.tweet.favorited;
-    [[TwitterClient sharedInstance] setTweet:self.tweet asFavorite:self.tweet.favorited completion:^(Tweet *tweet, NSError *error) {
-          self.tweet = tweet;
-    }];
-    self.tweet = self.tweet;
+    [self.tweet favorite:!self.tweet.favorited completion:nil];}
+
+- (IBAction)onRetweet:(id)sender {
+    [self.tweet retweet:nil];
+}
+
+- (IBAction)onReply:(id)sender {
+    // @TODO(florian): Implement reply
+//    ComposeViewController *viewController = [[ComposeViewController alloc] init];
+//    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+//    viewController.delegate = self;
+//    viewController.originalTweet = self.tweet;
+//    [TweetsViewController setupNavigationAppearance:navigationController];
+//    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 //- (void)layoutSubviews {

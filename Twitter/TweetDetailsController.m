@@ -36,7 +36,6 @@
     // Do any additional setup after loading the view from its nib.
     self.tweet = self.tweet;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tweetDidUpdate) name:TweetDidUpdate object:self.tweet];
-    [self tweetDidUpdate];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -45,7 +44,7 @@
 }
 
 - (void)tweetDidUpdate {
-    NSLog(@"Updated tweet! %d", self.tweet.favorited);
+    NSLog(@"Updated tweet!");
     // Refresh UI;
     self.tweet = self.tweet;
 }
@@ -67,7 +66,7 @@
         //self.isRetweetImageView.frame = self.isRetweetImageViewFrameHidden;
     }
 
-    NSLog(@"setTweet %d %d", tweetToDisplay.retweeted, tweetToDisplay.favorited);
+    //NSLog(@"setTweet %d %d", tweetToDisplay.retweeted, tweetToDisplay.favorited);
 
     [ImageLoaderHelper setImage:self.avatarImageView withUrlString:tweetToDisplay.user.profileImageUrl];
     self.messageLabel.text = tweetToDisplay.text;
@@ -82,13 +81,11 @@
 
 
 - (IBAction)onToggleFavorite:(id)sender {
-    NSLog(@"----------");
-    NSLog(@"onToggleFavorite start");
-    void(^updateTweet)(Tweet *tweet, NSError *error) = ^(Tweet *tweet, NSError *error) {
-        NSLog(@"onToggleFavorite completion");
-        NSLog(@"----------");
-    };
-    [self.tweet favorite:!self.tweet.favorited completion:updateTweet];
+    [self.tweet favorite:!self.tweet.favorited completion:nil];
+}
+
+- (IBAction)onRetweet:(id)sender {
+    [self.tweet retweet:nil];
 }
 
 - (IBAction)onReply:(id)sender {
@@ -103,15 +100,7 @@
 - (void)composeViewController:(ComposeViewController *)composeViewController didComposeTweet:(Tweet *)tweet {
 }
 
-- (IBAction)onRetweet:(id)sender {
-    [[TwitterClient sharedInstance] retweet:self.tweet completion:
-     ^(Tweet *tweet, NSError *error) {
-     }
-    ];
-    self.tweet.retweeted = YES;
-    self.tweet.retweetCount += 1;
-    self.tweet = self.tweet;
-}
+
 
 /*
 #pragma mark - Navigation

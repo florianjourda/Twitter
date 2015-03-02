@@ -104,7 +104,7 @@ NSString * const TweetDidUpdate = @"TweetDidUpdate";
     // Async server-side action
     [[TwitterClient sharedInstance] setTweet:self asFavorite:isFavorite completion:^(Tweet *tweet, NSError *error) {
         [self mergeValuesForKeysFromModel:tweet];
-        NSLog(@"Call TweetDidUpdate with favorite: %d", self.favorited);
+        //NSLog(@"Call TweetDidUpdate with favorite: %d", self.favorited);
         [[NSNotificationCenter defaultCenter] postNotificationName:TweetDidUpdate object:self];
         if (completion != nil) {
             completion(tweet, nil);
@@ -112,8 +112,8 @@ NSString * const TweetDidUpdate = @"TweetDidUpdate";
     }];
     // Sync client-side action to fake fast result
     self.favorited = isFavorite;
-    NSLog(@"Set favorite: %d", self.favorited);
-    NSLog(@"Call TweetDidUpdate with favorite: %d", self.favorited);
+    self.favoriteCount += (isFavorite) ? 1 : -1;
+    //NSLog(@"Call TweetDidUpdate with favorite: %d", self.favorited);
     [[NSNotificationCenter defaultCenter] postNotificationName:TweetDidUpdate object:self];
 }
 
@@ -126,8 +126,20 @@ NSString * const TweetDidUpdate = @"TweetDidUpdate";
 //    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
-- (void)retweet {
-
+- (void)retweet:(void (^)(Tweet *tweet, NSError *error))completion; {
+    // Async server-side action
+    [[TwitterClient sharedInstance] retweet:self completion: ^(Tweet *tweet, NSError *error) {
+        [self mergeValuesForKeysFromModel:tweet.originalTweet];
+        //NSLog(@"Call TweetDidUpdate with favorite: %d", self.favorited);
+        [[NSNotificationCenter defaultCenter] postNotificationName:TweetDidUpdate object:self];
+        if (completion != nil) {
+            completion(tweet, nil);
+        }
+    }];
+    // Sync client-side action to fake fast result
+    self.retweeted = YES;
+    self.retweetCount += 1;
+    [[NSNotificationCenter defaultCenter] postNotificationName:TweetDidUpdate object:self];
 }
 
 
